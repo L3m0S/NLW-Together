@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(router);
 
-app.use(specifyError);
+// app.use(specifyError);
 
 app.listen(3333, () => {
     console.log("Server rodando na porta 3333!")
