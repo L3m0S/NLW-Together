@@ -12,11 +12,19 @@ interface IUserRequest {
 
 class CreateUserService {
 
-    async execute({name, email, admin, password} : IUserRequest) {
+    async execute({name, email, admin = false, password} : IUserRequest) {
        const usersRepository = getCustomRepository(UsersRepositories);
 
+       if(!name) {
+           throw new Error("Por gentileza, preencha corretamente o nome de usuario!")
+       }
+
        if(!email) {
-           throw new Error("Por gentileza, insira o email corretamente!")
+           throw new Error("Por gentileza, preencha corretamente o email corretamente!")
+       }
+
+       if(!password) {
+        throw new Error("Por gentileza, forneça uma senha!")
        }
 
        const userAlreadyExistis = await usersRepository.findOne({
@@ -24,7 +32,7 @@ class CreateUserService {
        });
 
        if(userAlreadyExistis) {
-           throw new Error("User already exists");
+           throw new Error("Email ja cadastrado!");
        }
 
        const passwordHash = await hash(password, 8);
